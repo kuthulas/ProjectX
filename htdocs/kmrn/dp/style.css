@@ -1,0 +1,154 @@
+.PT,.CSS,.TP,.Division,.Location { 
+    /*border:0.2em solid grey;  */
+	border: 2px solid rgb(52, 103, 137);
+    width:100px;
+    height:50px;
+    position:absolute;
+    text-align:center;
+    line-height:100px;
+	border-radius:50px;
+	cursor:move;
+	/*background-color:#E8E8E8;*/
+	background-color:#FFFFFF;
+	filter:alpha(opacity=80);
+		box-shadow: 2px 2px 19px #aaa;
+   -o-box-shadow: 2px 2px 19px #aaa;
+   -webkit-box-shadow: 2px 2px 19px #aaa;
+   -moz-box-shadow: 2px 2px 19px #aaa;
+}
+
+
+.ep{
+position:absolute;
+background-color:#000000;
+top:18px;
+left:32.5px;
+border-radius:35px;
+width:35px;
+height:18px;
+}
+
+.menu,.menudiv,#stream1 { 
+border-radius:0.5em;
+	position:fixed; 
+	right:1em; top:1em;
+	background-color:#808080;
+	padding:0.3em;
+	opacity:0.8;
+	z-index:5000;
+	filter:alpha(opacity=80);
+		box-shadow: 2px 2px 19px #aaa;
+   -o-box-shadow: 2px 2px 19px #aaa;
+   -webkit-box-shadow: 2px 2px 19px #aaa;
+   -moz-box-shadow: 2px 2px 19px #aaa;
+
+}
+
+#trans { 
+border-radius:0.5em;
+	position:fixed; 
+	right:50%; top:5%;
+	background-color:#808080;
+	padding:0.3em;
+	opacity:0.8;
+	z-index:5000;
+	filter:alpha(opacity=80);
+		box-shadow: 2px 2px 19px #aaa;
+   -o-box-shadow: 2px 2px 19px #aaa;
+   -webkit-box-shadow: 2px 2px 19px #aaa;
+   -moz-box-shadow: 2px 2px 19px #aaa;
+
+}
+
+
+#stream2 { 
+border-radius:0.5em;
+	position:fixed; 
+	right:1em; top:50%;
+	background-color:#808080;
+	padding:0.3em;
+	opacity:0.8;
+	z-index:5000;
+	filter:alpha(opacity=80);
+		box-shadow: 2px 2px 19px #aaa;
+   -o-box-shadow: 2px 2px 19px #aaa;
+   -webkit-box-shadow: 2px 2px 19px #aaa;
+   -moz-box-shadow: 2px 2px 19px #aaa;
+
+}
+
+
+
+.menudiv {
+left:1em;
+top:1em;
+width:10em;
+padding-top:0.1em;
+padding-bottom:0.5em;
+}
+
+#stream1,#stream2 {
+right:1em;
+width:40em;
+padding-top:0.1em;
+padding-bottom:0.5em;
+}
+
+.menudiv h5 {
+margin-top:0.25em;
+margin-bottom:0.25em;
+font-size:1em;
+}
+
+a {text-decoration:none;
+font-size:0.8em;
+color:#000;
+font-family:helvetica;
+
+}
+a:hover {
+font-weight:bold;
+background-color:#7E952C;
+}
+
+.focusField{
+    	border:solid 2px #73A6FF;
+    	background:#EFF5FF;
+    	color:#000;
+    	width:100%;
+    	text-align:center;
+    }
+.idleField{
+    	background:#EEFC8B;
+    	color: #6F6F6F;
+		border: solid 2px #DFDFDF;
+		width:100%;
+		text-align:center;
+    }	
+.propmenu{ 
+	border-radius:0.5em;
+	background-color:#808080;
+	opacity:0.8;
+	padding:0.2em;
+	position:absolute;
+	left:100px;
+	z-index:5000;
+	left:100px;
+	filter:alpha(opacity=80);
+    box-shadow: 2px 2px 19px #aaa;
+   -o-box-shadow: 2px 2px 19px #aaa;
+   -webkit-box-shadow: 2px 2px 19px #aaa;
+   -moz-box-shadow: 2px 2px 19px #aaa;
+	line-height:0.5em;
+	width:100px;
+	height:auto;
+}	
+
+.propbox, .transpropbox { 
+	border-radius:0.2em;
+	padding:0em;
+	text-align:center;
+	background-color:#FEED91;
+	width:80%;
+	height:auto;
+}	

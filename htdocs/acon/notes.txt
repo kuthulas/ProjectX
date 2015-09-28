@@ -1,0 +1,20 @@
+set, save and load labels for each connection
+add profiles
+toggle/choose profiles
+multiple nodes in clusters
+voss interface - done
+
+
+
+
+adding/modifying clusters after connections - 2?
+session independent endpoint ids - 2?
+
+modify effect - 1
+
+route manager - 3 - done(phase 1- no save/load)
+Profile AD - done!
+
+SBC profiles - 2
+Device drivers - 2
+null,unique,conflict check -2

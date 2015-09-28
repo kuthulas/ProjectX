@@ -1,0 +1,991 @@
+Current configuration : 24610 bytes
+!
+! Last configuration change at 23:51:17 UTC Tue May 1 2012
+!
+version 15.1
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+no platform punt-keepalive disable-kernel-core
+!
+hostname CUBE-SP-RTP
+!
+boot-start-marker
+boot system bootflash:asr1000rp2-adventerprisek9.03.04.01.S.151-3.S1.bin
+boot system bootflash:asr1000rp2-adventerprisek9.03.04.00a.S.151-3.S0a.bin
+boot-end-marker
+!
+!
+vrf definition Mgmt-intf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+  address-family ipv6
+ exit-address-family
+!
+logging buffered 2147483647
+enable secret 4 dF34os/rztYiicHD5JuP77/nI1urG4VdY/MJCkAOCDQ
+enable password 7 04570A04
+!
+no aaa new-model
+!
+ip vrf Admin
+ rd 111:1
+ vpn id 111:1
+ route-target export 111:1
+ route-target import 7:1
+ route-target import 110:1
+ route-target import 111:1
+ route-target import 120:1
+ route-target import 8:1
+!
+ip vrf Ent7
+ rd 7:1
+ vpn id 7:1
+ route-target export 7:1
+ route-target import 7:1
+  route-target import 110:1
+ route-target import 111:1
+ route-target import 120:1
+!
+ip vrf Ent8
+ rd 8:1
+ vpn id 8:1
+ route-target export 8:1
+ route-target import 8:1
+ route-target import 110:1
+ route-target import 111:1
+ route-target import 120:1
+!
+ip vrf Extranet
+ rd 110:1
+ vpn id 110:1
+ route-target export 110:1
+ route-target import 210:1
+ route-target import 111:1
+ route-target import 110:1
+ route-target import 120:1
+ route-target import 7:1
+ route-target import 8:1
+!
+ ip vrf Extranet-CC
+ rd 120:1
+ vpn id 120:1
+ route-target export 120:1
+ route-target import 120:1
+ route-target import 7:1
+ route-target import 111:1
+ route-target import 110:1
+ route-target import 8:1
+!
+ip vrf Public
+ rd 210:1
+ vpn id 210:1
+ route-target export 210:1
+ route-target import 210:1
+!
+!
+!
+no ip domain lookup
+!
+!
+!
+!
+!
+ !
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+redundancy
+ mode none
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+ !
+buffers huge size 65535
+!
+!
+!
+interface Loopback0
+ ip address 192.168.120.1 255.255.255.255
+ ip ospf network point-to-point
+!
+interface Loopback1
+ description Global SBC signalling
+ ip vrf forwarding Extranet-CC
+ ip address 192.168.121.1 255.255.255.255
+ ip ospf network point-to-point
+!
+interface Loopback17
+ description vrf Ent7 SBC signalling
+ ip vrf forwarding Ent7
+ ip address 192.168.141.1 255.255.255.255
+ ip ospf network point-to-point
+!
+interface Loopback18
+ description vrf Ent8 SBC signalling
+ ip vrf forwarding Ent8
+  ip address 192.168.142.1 255.255.255.255
+ ip ospf network point-to-point
+!
+interface SBC0
+ description Global
+ ip address 192.168.122.1 255.255.255.0
+!
+interface SBC7
+ ip vrf forwarding Ent7
+ ip address 192.168.131.2 255.255.255.248 secondary
+ ip address 192.168.131.1 255.255.255.248
+!
+interface SBC8
+ ip vrf forwarding Ent8
+ ip address 192.168.132.2 255.255.255.248 secondary
+ ip address 192.168.132.1 255.255.255.248
+!
+interface TenGigabitEthernet0/0/0
+ no ip address
+ shutdown
+!
+interface TenGigabitEthernet0/1/0
+ description Trunk to HCS-DC-N7K e2/12
+ no ip address
+  logging event link-status
+ load-interval 30
+ cdp enable
+!
+interface TenGigabitEthernet0/1/0.4052
+ encapsulation dot1Q 4052
+ ip address 192.168.124.2 255.255.255.252
+ ip ospf network point-to-point
+!
+interface TenGigabitEthernet0/1/0.4053
+ encapsulation dot1Q 4053
+ ip vrf forwarding Ent7
+ ip address 192.168.154.2 255.255.255.252
+ ip ospf network point-to-point
+ mpls bgp forwarding
+!
+interface TenGigabitEthernet0/1/0.4054
+ encapsulation dot1Q 4054
+ ip vrf forwarding Extranet-CC
+ ip address 192.168.124.6 255.255.255.252
+ ip ospf network point-to-point
+ mpls bgp forwarding
+!
+interface TenGigabitEthernet0/1/0.4055
+  encapsulation dot1Q 4055
+ ip vrf forwarding Ent8
+ ip address 192.168.154.9 255.255.255.252
+ ip ospf network point-to-point
+ mpls bgp forwarding
+!
+interface GigabitEthernet0/2/0
+ no ip address
+ shutdown
+ negotiation auto
+!
+interface GigabitEthernet0/2/1
+ no ip address
+ shutdown
+ negotiation auto
+!
+interface GigabitEthernet0/2/2
+ no ip address
+ shutdown
+ negotiation auto
+!
+interface GigabitEthernet0/2/3
+ no ip address
+ shutdown
+  negotiation auto
+!
+interface GigabitEthernet0/2/4
+ no ip address
+ shutdown
+ negotiation auto
+!
+interface GigabitEthernet0
+ vrf forwarding Mgmt-intf
+ ip address 10.4.4.21 255.255.255.0
+ negotiation auto
+!
+router ospf 120 vrf Extranet-CC
+ network 192.168.121.1 0.0.0.0 area 0
+ network 192.168.124.4 0.0.0.3 area 0
+!
+router ospf 17 vrf Ent7
+ network 192.168.124.4 0.0.0.3 area 0
+ network 192.168.131.0 0.0.0.7 area 0
+ network 192.168.141.1 0.0.0.0 area 0
+ network 192.168.154.0 0.0.0.3 area 0
+!
+router ospf 18 vrf Ent8
+ network 192.168.124.4 0.0.0.3 area 0
+  network 192.168.132.0 0.0.0.7 area 0
+ network 192.168.142.1 0.0.0.0 area 0
+ network 192.168.154.8 0.0.0.3 area 0
+!
+router ospf 1
+ router-id 192.168.120.1
+ ispf
+ nsf
+ timers throttle spf 50 50 5000
+ timers throttle lsa 0 20 5000
+ timers lsa arrival 15
+ timers pacing flood 15
+ network 192.168.50.0 0.0.0.3 area 0
+ network 192.168.120.1 0.0.0.0 area 0
+ network 192.168.124.0 0.0.0.3 area 0
+ network 192.168.124.4 0.0.0.3 area 0
+ network 192.168.131.3 0.0.0.0 area 0
+ network 192.168.141.1 0.0.0.0 area 0
+ network 192.168.154.0 0.0.0.3 area 0
+!
+router bgp 102
+ bgp router-id 192.168.120.1
+ bgp log-neighbor-changes
+ neighbor 192.168.50.1 remote-as 65535
+  !
+ address-family ipv4
+  network 192.168.120.1 mask 255.255.255.255
+  network 192.168.124.0 mask 255.255.255.252
+  redistribute ospf 1
+  neighbor 192.168.50.1 activate
+  neighbor 192.168.50.1 send-label
+ exit-address-family
+ !
+ address-family ipv4 vrf Ent7
+  redistribute connected
+  redistribute ospf 17
+  neighbor 192.168.50.1 remote-as 65535
+  neighbor 192.168.50.1 activate
+ exit-address-family
+ !
+ address-family ipv4 vrf Extranet
+  neighbor 192.168.50.1 remote-as 65535
+  neighbor 192.168.50.1 activate
+  neighbor 192.168.50.1 send-label
+ exit-address-family
+!
+ip forward-protocol nd
+!
+ no ip http server
+no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 10.4.250.1
+ip route vrf Mgmt-intf 0.0.0.0 0.0.0.0 10.4.4.1
+!
+cdp run
+!
+!
+!
+control-plane
+!
+!
+!
+!
+sbc HCSCC
+ sbe
+   sip header-profile default
+    header Allow entry 1
+     action pass
+    header Accept entry 1
+     action pass
+    header Call-Info entry 1
+     action pass
+    header Remote-Party-ID entry 1
+      action pass
+    header P-Asserted-Identity entry 1
+     action pass
+   sip method-profile SMP1
+    pass-body
+    method 200
+     action pass
+     header-profile default
+    method INFO
+     action pass
+     header-profile default
+    method PRACK
+     action pass
+     header-profile default
+    method INVITE
+     action pass
+     header-profile default
+    method NOTIFY
+     action pass
+     header-profile default
+    method UPDATE
+     action pass
+     header-profile default
+   adjacency sip Ent7-CM
+     description CUCM adjacency for Ent7
+    force-signaling-peer
+    vrf Ent7
+    nat force-off
+    header-profile inbound default
+    header-profile outbound default
+    method-profile inbound SMP1
+    method-profile outbound SMP1
+    preferred-transport tcp
+    signaling-address ipv4 192.168.141.1
+    statistics method summary
+    signaling-port 5060
+    remote-address ipv4 10.4.207.3 255.255.255.255
+    signaling-peer 10.4.207.3
+    account Ent7
+    sipi passthrough
+    media-late-to-early-iw incoming
+    media-late-to-early-iw outgoing
+    attach
+   adjacency sip Ent8-CM
+    description CUCM adjacency for Ent8
+    force-signaling-peer
+    vrf Ent8
+    nat force-off
+     header-profile inbound default
+    header-profile outbound default
+    method-profile inbound SMP1
+    method-profile outbound SMP1
+    preferred-transport tcp
+    signaling-address ipv4 192.168.142.1
+    statistics method summary
+    signaling-port 5060
+    remote-address ipv4 10.4.207.2 255.255.255.255
+    signaling-peer 10.4.207.2
+    account Ent8
+    sipi passthrough
+    media-late-to-early-iw incoming
+    media-late-to-early-iw outgoing
+    attach
+   adjacency sip Ent7-CC-1
+    description CUBE adjacency for Ent7
+    force-signaling-peer
+    vrf Ent7
+    nat force-off
+    header-profile inbound default
+    header-profile outbound default
+    method-profile inbound SMP1
+    method-profile outbound SMP1
+     preferred-transport tcp
+    signaling-address ipv4 192.168.141.1
+    statistics method summary
+    signaling-port 5060
+    remote-address ipv4 10.4.207.194 255.255.255.255
+    signaling-peer 10.4.207.194
+    account Ent7
+    sipi passthrough
+    media-late-to-early-iw incoming
+    media-late-to-early-iw outgoing
+    ping-enable
+    attach
+   adjacency sip Ent7-CC-2
+    description CUBE adjacency for Ent7
+    force-signaling-peer
+    vrf Ent7
+    nat force-off
+    header-profile inbound default
+    header-profile outbound default
+    method-profile inbound SMP1
+    method-profile outbound SMP1
+    preferred-transport tcp
+    signaling-address ipv4 192.168.141.1
+    statistics method summary
+     signaling-port 5060
+    remote-address ipv4 10.4.207.195 255.255.255.255
+    signaling-peer 10.4.207.195
+    account Ent7
+    sipi passthrough
+    media-late-to-early-iw incoming
+    media-late-to-early-iw outgoing
+    ping-enable
+    attach
+   adjacency sip Ent7-CC-3
+    description CUBE adjacency for Ent7
+    force-signaling-peer
+    vrf Ent7
+    nat force-off
+    header-profile inbound default
+    header-profile outbound default
+    method-profile inbound SMP1
+    method-profile outbound SMP1
+    preferred-transport tcp
+    signaling-address ipv4 192.168.141.1
+    statistics method summary
+    signaling-port 5060
+    remote-address ipv4 10.4.207.196 255.255.255.255
+    signaling-peer 10.4.207.196
+     account Ent7
+    sipi passthrough
+    media-late-to-early-iw incoming
+    media-late-to-early-iw outgoing
+    attach
+   adjacency sip Ent7-CC-4
+    description CUBE adjacency for Ent7
+    force-signaling-peer
+    vrf Ent7
+    nat force-off
+    header-profile inbound default
+    header-profile outbound default
+    method-profile inbound SMP1
+    method-profile outbound SMP1
+    preferred-transport tcp
+    signaling-address ipv4 192.168.141.1
+    statistics method summary
+    signaling-port 5060
+    remote-address ipv4 10.4.207.197 255.255.255.255
+    signaling-peer 10.4.207.197
+    account Ent7
+    sipi passthrough
+    media-late-to-early-iw incoming
+    media-late-to-early-iw outgoing
+     attach
+   adjacency sip Ent8-CC-1
+    description CUBE adjacency for Ent8
+    force-signaling-peer all
+    signaling-peer-switch on-fail
+    vrf Ent8
+    nat force-off
+    header-profile inbound default
+    header-profile outbound default
+    method-profile inbound SMP1
+    method-profile outbound SMP1
+    preferred-transport tcp
+    signaling-address ipv4 192.168.142.1
+    statistics method summary
+    signaling-port 5060
+    remote-address ipv4 10.4.207.194 255.255.255.255
+    signaling-peer 10.4.207.194
+    signaling-peer-priority 6
+    account Ent8
+    sipi passthrough
+    media-late-to-early-iw incoming
+    media-late-to-early-iw outgoing
+    ping-enable
+    attach
+    adjacency sip Ent8-CC-2
+    description CUBE adjacency for Ent8
+    force-signaling-peer
+    vrf Ent8
+    nat force-off
+    header-profile inbound default
+    header-profile outbound default
+    method-profile inbound SMP1
+    method-profile outbound SMP1
+    preferred-transport tcp
+    signaling-address ipv4 192.168.142.1
+    statistics method summary
+    signaling-port 5060
+    remote-address ipv4 10.4.207.195 255.255.255.255
+    signaling-peer 10.4.207.195
+    account Ent8
+    sipi passthrough
+    media-late-to-early-iw incoming
+    media-late-to-early-iw outgoing
+    ping-enable
+    attach
+   adjacency sip Ent8-CC-3
+    description CUBE adjacency for Ent8
+    force-signaling-peer
+     vrf Ent8
+    nat force-off
+    header-profile inbound default
+    header-profile outbound default
+    method-profile inbound SMP1
+    method-profile outbound SMP1
+    preferred-transport tcp
+    signaling-address ipv4 192.168.142.1
+    statistics method summary
+    signaling-port 5060
+    remote-address ipv4 10.4.207.196 255.255.255.255
+    signaling-peer 10.4.207.196
+    account Ent8
+    sipi passthrough
+    media-late-to-early-iw incoming
+    media-late-to-early-iw outgoing
+    ping-enable
+    attach
+   adjacency sip Ent8-CC-4
+    description CUBE adjacency for Ent8
+    force-signaling-peer
+    vrf Ent8
+    nat force-off
+    header-profile inbound default
+     header-profile outbound default
+    method-profile inbound SMP1
+    method-profile outbound SMP1
+    preferred-transport tcp
+    signaling-address ipv4 192.168.142.1
+    statistics method summary
+    signaling-port 5060
+    remote-address ipv4 10.4.207.197 255.255.255.255
+    signaling-peer 10.4.207.197
+    account Ent8
+    sipi passthrough
+    media-late-to-early-iw incoming
+    media-late-to-early-iw outgoing
+    ping-enable
+    attach
+   adjacency sip Ent8-CC-5
+    description CUBE adjacency for Ent8
+    force-signaling-peer
+    vrf Ent8
+    nat force-off
+    header-profile inbound default
+    header-profile outbound default
+    method-profile inbound SMP1
+    method-profile outbound SMP1
+     preferred-transport tcp
+    signaling-address ipv4 192.168.142.1
+    statistics method summary
+    signaling-port 5060
+    remote-address ipv4 10.4.208.194 255.255.255.255
+    signaling-peer 10.4.208.194
+    account Ent8
+    sipi passthrough
+    media-late-to-early-iw incoming
+    media-late-to-early-iw outgoing
+    ping-enable
+    attach
+   adjacency sip Ent8-CC-6
+    description CUBE adjacency for Ent8
+    force-signaling-peer
+    vrf Ent8
+    nat force-off
+    header-profile inbound default
+    header-profile outbound default
+    method-profile inbound SMP1
+    method-profile outbound SMP1
+    preferred-transport tcp
+    signaling-address ipv4 192.168.142.1
+    statistics method summary
+     signaling-port 5060
+    remote-address ipv4 10.4.208.195 255.255.255.255
+    signaling-peer 10.4.208.195
+    account Ent8
+    sipi passthrough
+    media-late-to-early-iw incoming
+    media-late-to-early-iw outgoing
+    ping-enable
+    attach
+   adjacency sip Ent8-CC-7
+    description CUBE adjacency for Ent8
+    force-signaling-peer
+    vrf Ent8
+    nat force-off
+    header-profile inbound default
+    header-profile outbound default
+    method-profile inbound SMP1
+    method-profile outbound SMP1
+    preferred-transport tcp
+    signaling-address ipv4 192.168.142.1
+    statistics method summary
+    signaling-port 5060
+    remote-address ipv4 10.4.208.196 255.255.255.255
+    signaling-peer 10.4.208.196
+     account Ent8
+    sipi passthrough
+    media-late-to-early-iw incoming
+    media-late-to-early-iw outgoing
+    ping-enable
+    attach
+   adjacency sip Ent8-CC-8
+    description CUBE adjacency for Ent8
+    force-signaling-peer
+    vrf Ent8
+    nat force-off
+    header-profile inbound default
+    header-profile outbound default
+    method-profile inbound SMP1
+    method-profile outbound SMP1
+    preferred-transport tcp
+    signaling-address ipv4 192.168.142.1
+    statistics method summary
+    signaling-port 5060
+    remote-address ipv4 10.4.208.197 255.255.255.255
+    signaling-peer 10.4.208.197
+    account Ent8
+    sipi passthrough
+    media-late-to-early-iw incoming
+     media-late-to-early-iw outgoing
+    ping-enable
+    attach
+   adjacency sip Ent7-PGW-CC
+    description PGW adjacency for CC
+    force-signaling-peer
+    vrf Ent7
+    nat force-off
+    header-profile inbound default
+    header-profile outbound default
+    method-profile inbound SMP1
+    method-profile outbound SMP1
+    preferred-transport tcp
+    signaling-address ipv4 192.168.154.2
+    statistics method summary
+    signaling-port 5071
+    remote-address ipv4 10.4.250.6 255.255.255.255
+    signaling-peer 10.4.250.6
+    signaling-peer-port 5071
+    account Ent7
+    sipi passthrough
+    media-late-to-early-iw incoming
+    media-late-to-early-iw outgoing
+    attach
+    adjacency sip Ent7-PGW-CM
+    description PGW adjacency for Ent7 CM
+    force-signaling-peer
+    vrf Ent7
+    nat force-off
+    header-profile inbound default
+    header-profile outbound default
+    method-profile inbound SMP1
+    method-profile outbound SMP1
+    preferred-transport tcp
+    signaling-address ipv4 192.168.154.2
+    statistics method summary
+    signaling-port 5066
+    remote-address ipv4 10.4.250.6 255.255.255.255
+    signaling-peer 10.4.250.6
+    signaling-peer-port 5066
+    account Ent7
+    sipi passthrough
+    media-late-to-early-iw incoming
+    media-late-to-early-iw outgoing
+    attach
+   adjacency sip Ent8-PGW-CC
+    description PGW adjacency for CC
+    force-signaling-peer
+     vrf Ent8
+    nat force-off
+    header-profile inbound default
+    header-profile outbound default
+    method-profile inbound SMP1
+    method-profile outbound SMP1
+    preferred-transport tcp
+    signaling-address ipv4 192.168.154.9
+    statistics method summary
+    signaling-port 5072
+    remote-address ipv4 10.4.250.6 255.255.255.255
+    signaling-peer 10.4.250.6
+    signaling-peer-port 5072
+    account Ent8
+    sipi passthrough
+    media-late-to-early-iw incoming
+    media-late-to-early-iw outgoing
+    attach
+   adjacency sip Ent8-PGW-CM
+    description PGW adjacency for Ent7 CM
+    force-signaling-peer
+    vrf Ent8
+    nat force-off
+    header-profile inbound default
+     header-profile outbound default
+    method-profile inbound SMP1
+    method-profile outbound SMP1
+    preferred-transport tcp
+    signaling-address ipv4 192.168.154.9
+    statistics method summary
+    signaling-port 5067
+    remote-address ipv4 10.4.250.6 255.255.255.255
+    signaling-peer 10.4.250.6
+    signaling-peer-port 5067
+    account Ent8
+    sipi passthrough
+    media-late-to-early-iw incoming
+    media-late-to-early-iw outgoing
+    attach
+   adjacency sip Ent7-KCOM-CC
+    description KCOM CUBE adjacency for Ent7
+    force-signaling-peer
+    vrf Ent7
+    nat force-off
+    header-profile inbound default
+    header-profile outbound default
+    method-profile inbound SMP1
+    method-profile outbound SMP1
+     preferred-transport tcp
+    signaling-address ipv4 192.168.141.1
+    statistics method summary
+    signaling-port 5060
+    remote-address ipv4 10.7.52.100 255.255.255.255
+    signaling-peer 10.7.52.100
+    account Ent7
+    sipi passthrough
+    media-late-to-early-iw incoming
+    media-late-to-early-iw outgoing
+    ping-enable
+    attach
+   cac-policy-set 1
+    first-cac-table Ent-CAC-table
+    first-cac-scope call
+    cac-table Ent-CAC-table
+     table-type limit account
+     entry 1
+      match-value Ent7-PGW-CC
+      caller-codec-list Ent7-Codecs
+      callee-codec-list Ent7-Codecs
+      action cac-complete
+     entry 2
+      match-value Ent7-PGW-CM
+       caller-codec-list Ent7-Codecs
+      callee-codec-list Ent7-Codecs
+      action cac-complete
+     entry 3
+      match-value Ent7-CC-1
+      caller-codec-list Ent7-Codecs
+      callee-codec-list Ent7-Codecs
+      action cac-complete
+     entry 4
+      match-value Ent7-CC-2
+      caller-codec-list Ent7-Codecs
+      callee-codec-list Ent7-Codecs
+      action cac-complete
+     entry 5
+      match-value Ent8-PGW-CC
+      caller-codec-list Ent8-Codecs
+      callee-codec-list Ent8-Codecs
+      action cac-complete
+     entry 6
+      match-value Ent8-PGW-CM
+      caller-codec-list Ent8-Codecs
+      callee-codec-list Ent8-Codecs
+      action cac-complete
+     entry 7
+       match-value Ent8-CC-1
+      caller-codec-list Ent8-Codecs
+      callee-codec-list Ent8-Codecs
+      action cac-complete
+     entry 8
+      match-value Ent8-CC-2
+      caller-codec-list Ent8-Codecs
+      callee-codec-list Ent8-Codecs
+      action cac-complete
+     entry 9
+      match-value Ent8-CC-3
+      caller-codec-list Ent8-Codecs
+      callee-codec-list Ent8-Codecs
+      action cac-complete
+     entry 10
+      match-value Ent8-CC-4
+      caller-codec-list Ent8-Codecs
+      callee-codec-list Ent8-Codecs
+      action cac-complete
+     entry 11
+      match-value Ent8-CC-5
+      caller-codec-list Ent8-Codecs
+      callee-codec-list Ent8-Codecs
+      action cac-complete
+      entry 12
+      match-value Ent8-CC-6
+      caller-codec-list Ent8-Codecs
+      callee-codec-list Ent8-Codecs
+      action cac-complete
+     entry 13
+      match-value Ent8-CC-7
+      caller-codec-list Ent8-Codecs
+      callee-codec-list Ent8-Codecs
+      action cac-complete
+     entry 14
+      match-value Ent8-CC-8
+      caller-codec-list Ent8-Codecs
+      callee-codec-list Ent8-Codecs
+      action cac-complete
+     entry 15
+      match-value Ent7-KCOM-CC
+      caller-codec-list Ent7-Codecs
+      callee-codec-list Ent7-Codecs
+      action cac-complete
+    complete
+   cac-policy-set global 1
+   call-policy-set 1
+    first-call-routing-table Call_router
+     rtg-round-robin-table Ent7-RR
+     entry 1
+      dst-adjacency Ent7-CC-1
+      action complete
+     entry 2
+      dst-adjacency Ent7-CC-2
+      action complete
+    rtg-round-robin-table Ent8-RR
+     entry 1
+      dst-adjacency Ent8-CC-1
+      action complete
+     entry 2
+      dst-adjacency Ent8-CC-2
+      action complete
+     entry 3
+      dst-adjacency Ent8-CC-3
+      action complete
+     entry 4
+      dst-adjacency Ent8-CC-4
+      action complete
+     entry 5
+      dst-adjacency Ent8-CC-5
+      action complete
+     entry 6
+       dst-adjacency Ent8-CC-6
+      action complete
+     entry 7
+      dst-adjacency Ent8-CC-7
+      action complete
+     entry 8
+      dst-adjacency Ent8-CC-8
+      action complete
+    rtg-src-account-table Call_router
+     entry 1
+      match-account Ent7
+      action next-table Ent7_router
+     entry 2
+      match-account Ent8
+      action next-table Ent8_router
+    rtg-src-adjacency-table Ent7_router
+     entry 1
+      match-adjacency Ent7-PGW-CC
+      action next-table Ent7-RR
+     entry 2
+      match-adjacency Ent7-PGW-CM
+      dst-adjacency Ent7-CM
+      action complete
+     entry 3
+       match-adjacency Ent7-CM
+      dst-adjacency Ent7-PGW-CM
+      action complete
+    rtg-src-adjacency-table Ent8_router
+     entry 1
+      match-adjacency Ent8-PGW-CC
+      action next-table Ent8-RR
+     entry 2
+      match-adjacency Ent8-PGW-CM
+      dst-adjacency Ent8-CM
+      action complete
+    complete
+   call-policy-set 2
+    first-call-routing-table Call_router
+    rtg-round-robin-table 1
+    rtg-round-robin-table Ent7-RR
+     entry 1
+      dst-adjacency Ent7-CC-1
+      action complete
+     entry 2
+      dst-adjacency Ent7-CC-2
+      action complete
+     entry 3
+      dst-adjacency Ent7-KCOM-CC
+       action complete
+    rtg-round-robin-table Ent8-RR
+     entry 1
+      dst-adjacency Ent8-CC-1
+      action complete
+     entry 2
+      dst-adjacency Ent8-CC-2
+      action complete
+     entry 3
+      dst-adjacency Ent8-CC-3
+      action complete
+     entry 4
+      dst-adjacency Ent8-CC-4
+      action complete
+     entry 5
+      dst-adjacency Ent8-CC-5
+      action complete
+     entry 6
+      dst-adjacency Ent8-CC-6
+      action complete
+     entry 7
+      dst-adjacency Ent8-CC-7
+      action complete
+     entry 8
+       dst-adjacency Ent8-CC-8
+      action complete
+    rtg-src-account-table Call_router
+     entry 1
+      match-account Ent7
+      action next-table Ent7_router
+     entry 2
+      match-account Ent8
+      action next-table Ent8_router
+    rtg-src-adjacency-table Ent7_router
+     entry 1
+      match-adjacency Ent7-PGW-CC
+      action next-table Ent7-CUBE-RTR
+     entry 2
+      match-adjacency Ent7-PGW-CM
+      dst-adjacency Ent7-CM
+      action complete
+     entry 3
+      match-adjacency Ent7-CM
+      dst-adjacency Ent7-PGW-CM
+      action complete
+    rtg-src-adjacency-table Ent8_router
+     entry 1
+      match-adjacency Ent8-PGW-CC
+       action next-table Ent8-RR
+     entry 2
+      match-adjacency Ent8-PGW-CM
+      dst-adjacency Ent8-CM
+      action complete
+    rtg-dst-address-table Ent7-CUBE-RTR
+     entry 1
+      match-address +18007000001 digits
+      action next-table Ent7-RR
+     entry 2
+      match-address +18007000100 digits
+      dst-adjacency Ent7-KCOM-CC
+      action complete
+    complete
+   call-policy-set default 2 
+   network-id 8080
+   sip timer
+    udp-response-linger-period 5000
+ !
+ !
+   codec list Ent7-Codecs
+    codec PCMU
+    codec G729
+   codec list Ent8-Codecs
+     codec PCMU
+    codec G729
+ ! SBC default blacklist settings apply.
+ ! show sbc <name> sbe blacklist configured-limits
+ !
+ media-address ipv4 192.168.131.2 vrf Ent7
+  port-range 16384 32767 any
+ media-address ipv4 192.168.132.2 vrf Ent8
+  port-range 16384 32767 any
+ media-timeout first-packet
+ activate
+!
+!
+!
+!
+line con 0
+ password 7 141C17125C547B
+ login
+ stopbits 1
+line vty 0 4
+ exec-timeout 0 0
+ privilege level 15
+ password 7 141C17125C547B
+ login
+  transport input telnet ssh
+line vty 5 15
+ privilege level 15
+ password 7 11021C1C47425A
+ login
+ transport input telnet ssh
+!
+end

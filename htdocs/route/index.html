@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Route Creator</title>
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body oncontextmenu="return false;" onunload="jsPlumb.unload();" data-library="jquery">
+<div id="demo">
+<div id="menu" style="left:30px;">
+<label for="call">Call Type</label>
+<select id="call" class="obj" name="call">
+<option value="select">Select/Create</option>
+<option value="call1">Intra-Site</option>
+<option value="call2">Inter-Site</option>
+<option value="call3">Incoming To Site</option>
+<option value="new">new</option>
+</select>
+<div id="newtype" style="width:auto;display:none;"><input id="ntype" style="width:100px;"></input><a style="padding:0.1em;	border:1px solid black;border-radius:0.2em;background-color:#F2C24A;cursor:pointer;"id="addtype">Create</a></div>
+</div>
+<div id="palette" style="left:400px;">
+<button name="CSS" class="button">CSS</button> 
+<button name="PT" class="button">PT</button> 
+<button name="TP" class="button">TP</button> 
+<button name="RP" class="button">RP</button> 
+<button name="RL" class="button">RL</button> 
+<button name="RG" class="button">RG</button> 
+<button name="PH" class="button">PH</button>
+</div>
+<div id="canvas"></div>
+<div id="submit">Save</div><input id="actionname" value="Action Tag"></input>
+</div>
+	<script type="text/javascript" src="lib/jquery.min.js"></script>
+	<script type="text/javascript" src="lib/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="lib/jquery.ui.touch-punch.min.js"></script>
+	<script type="text/javascript" src="lib/jquery.jsPlumb-1.3.16-all-min.js"></script>
+	<script type="text/javascript" src="lib/route.js"></script>
+	 <script>
+$(function() {
+$("#call").val("select");
+$( "#call" ).change(function() {
+if($(this).val()=="new")$("#newtype").show();
+});
+});
+
+$(document).ready(function(){
+	$("#actionname").keyup(function(){	
+		//alert('entered');
+		transval = $(this).val();
+		$('input[id*=transaction]').each(function(){
+			$(this).val(transval);
+		});
+	});
+});
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+	<head>
+		<title>The Bug Factory</title>
+		<link rel="stylesheet" href="../css/index.css">
+	</head>
+	
+	<body onunload="jsPlumb.unload();" data-library="jquery" oncontextmenu="return false;">
+	<div id="main">
+		<div id="bar">
+		<div class="intro"><a href="/">HCS Aggregation Manager</a></div>		
+		<div class="buttons"><button type="submit" class="positive" id="shcountries">PSTN Interfaces</button> </div>
+		<div class="buttons"><button type="submit" class="positive" id="vossbt">Discover Clusters</button> </div>
+		<div class="buttons"><button type="submit" class="positive" id="syncbt">Explore SBC</button> </div>
+		<div class="buttons"><button type="submit" class="positive" id="testcall">Jabber Dialer</button> </div>
+		<div class="buttons"><button type="submit" class="positive" id="togglelog">Session Trace</button> </div>  
+		<div class="buttons"><button type="submit" class="positive" id="savebt">Save & Deploy</button> </div>
+		<div id="list"></div>
+		</div>
+		<div id="log" style="display: none;"></div>
+		<div class="commands" id="commands" style="display: none;overflow:scroll;height:80%"></div>
+		<div id="stage" class="stage"></div>
+	</div>
+	<script type="text/javascript" src="lib/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="lib/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="lib/jquery.jsPlumb-1.3.9-all-min.js"></script>
+	<script type="text/javascript" src="lib/corefunctions.js"></script>
+	<script type="text/javascript" src="lib/module1.js"></script>
+	<script type="text/javascript" src="lib/module2.js"></script> 
+	<script type="text/javascript" src="lib/module3.js"></script> 
+	<script type="text/javascript" src="lib/module4.js"></script>  
+	<script type="text/javascript" src="lib/deploy.js"></script>
+	<script type="text/javascript" src="lib/utilities.js"></script>
+	<script type="text/javascript" src="lib/cwic.js"></script>
+	</body>
+</html>

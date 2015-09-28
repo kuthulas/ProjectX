@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Jabber</title>
+	</head>
+	
+	<script src="jquery.js"></script>
+	<script src="cwic.js"></script>
+	<script type="text/javascript">
+	
+	$(document.body).ready(function(){
+	$("#container").cwic('init',{
+	ready: function() {
+		$(this).cwic('registerPhone',{
+		user: 'kuthulas',
+		password: 'hcs@123',
+		cucm: '10.5.11.101',
+		success: function() {
+		alert("Register Success!")
+		$("#callbtn").attr('disabled',false);
+		}
+		});
+	}
+	});
+	
+	$("#callbtn").click(function() {
+	var num = $("#numtodial").val();
+	var ob = {participant: {recipient: num}};
+	$("#container").cwic('startConversation', ob);
+	});
+	
+	$("#container").bind('conversationStart.cwic', function(event, conversation){
+	$("#callcontainer .remotename").text(conversation.participant.recipient);
+	$("#callcontainer").show();
+	});
+	
+	$("#callcontainer .endbtn").click(function() { 
+	$("#container").cwic('endConversation');
+	});
+	
+	$("#container").bind('conversationEnd.cwic', function(event, conversation) {
+	$("#callcontainer").hide();
+	
+	});
+	});
+	</script>
+	</head>
+	
+	<body>
+	<label for="numtodial"></label>
+	<input type="text" id="numtodial"></input>
+	<button type="button" id="callbtn" disabled="true">Call</button>
+	<div id="container">
+	<div id="callcontainer" style="display:none">
+	<div class="remotename"></div>
+	<button type="button" class="endbtn">End</button>
+	</div>
+	</div>
+	</body>
+</html>	

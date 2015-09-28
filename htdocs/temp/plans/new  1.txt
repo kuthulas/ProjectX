@@ -1,0 +1,29 @@
+interface for ports
+interface for pstn destination ips
+interface for multiple cucm nodes in cluster - somwat
+interface for choosing sbc ips - somwat
+click to pin a country - required?
+profile for each connection - 
+
+sync with voss for country and clusters and pgw 
+explore sbc for interfaces and vrfs and ips
+make trunks and save
+save options based on trunk type and ui features
+create config based on tempplate and options
+
+save connection
+
+find srctype
+find tgttype
+
+{pgw:sbc}
+{pgw:cluster}
+{sbc:cluster}
+{country:pgw}
+{country:sbc}
+
+change     			uioperations       deviceconfiguration
+change label		update cxnz and o	edit destination and vrf
+delete cxn			delete cxnz and o	delete trunks
+
+

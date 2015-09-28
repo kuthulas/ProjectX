@@ -1,0 +1,121 @@
+package hcs;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+// Prepares the required database structures for Aggregation Configurator //
+public class initpush {
+    public static void main(String[] args) throws Exception {
+    	initdb();
+        Class.forName("com.mysql.jdbc.Driver").newInstance();
+        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/hcs?" +
+        		"user=root");
+        Statement stat = conn.createStatement();
+        String[][] tables = {
+        {"cxnz","id","vrflabel","profilelabel","cpid","type","src","tgt","srcepid","tgtepid"},
+        {"inv","type","name","pipa","user","pass","ptop","pleft"},						
+        {"opgw","id","trnkgrpin","trnkgrpout","svc","sipprofile","distrib","mgcdomain","destination","portin","portout","rttrnkname","rtlistname","cpid"},
+        {"osbc","id", "adjname","description","vrf","sigip","portin","peerip","peerport"},
+        {"tpgw","tag","cmd"},
+        {"tsbc","tag","cmd"},
+        {"clusters","type","ptop","pleft","cpid","customer","nodes","name1","ip1","name2","ip2","name3","ip3","name4","ip4","name5","ip5","name6","ip6","name7","ip7","name8","ip8"},
+        {"sbcint","interface","vrf","ip"},
+        {"globals","rtlistpref","rtlistpstnpref","rtpref","rtpstnpref","pgwinsipprofilepref","pgwoutsipprofilepref","svc","ipttrnkgrpin","ipttrnkgrpout","sbcinport","defpstnport","pstntrnkgrpin","pstntrnkgrpout"},
+        {"countries","name","code","ox","oy","ip","port"},
+        {"ports","id","value"},
+        {"ppgw","parameter","type"},
+        {"pprofiles","name","p1","p2","p3","p4","p5"}};
+
+        for(int i=1; i<=tables.length; i++){
+        		String s = "create table " + tables[i-1][0] + " (";;
+        	for(int j=2; j<=tables[i-1].length; j++){
+        		s += tables[i-1][j-1] + " VARCHAR(1000)";
+        		if (j != tables[i-1].length) s += ",";
+        	}
+        	s+=");";
+        	System.out.println(s);
+        	stat.executeUpdate(s);
+            }
+        
+     // Configuration data
+        stat.executeUpdate("insert into inv values(\"sbc\",\"SBC_Name\",\"SBC_Address\",\"SBC_User\",\"SBC_Pass\",\"30\",\"70\");");
+        stat.executeUpdate("insert into inv values(\"pgw\",\"PGW_Name\",\"PGW_Address\",\"PGW_User\",\"PGW_Pass\",\"30\",\"30\");"); 	
+        stat.executeUpdate("insert into globals values(\"rtlist2lc\",\"rtlist2pstn\",\"rtetolc\",\"routeto\",\"inprofile\",\"outprofile\",\"sip-path\",\"1001\",\"2001\",\"5064\",\"5060\",\"5000\",\"5001\");");
+        stat.executeUpdate("insert into countries values(\"India\",\"091\",1364,440,\"172.18.135.231\",\"5071\");");
+        stat.executeUpdate("insert into countries values(\"United States\",\"001\",400,315,\"172.18.142.231\",\"5067\");");
+        stat.executeUpdate("insert into countries values(\"United Kingdom\",\"044\",930,245,\"172.18.186.231\",\"5078\");");
+        stat.executeUpdate("insert into ppgw values(\"sipdtmfcontenttype\",\"text\");");
+        stat.executeUpdate("insert into ppgw values(\"subscribenotifysupport\",\"checkbox\");");
+        stat.executeUpdate("insert into ppgw values(\"support183\",\"text\");");
+        stat.executeUpdate("insert into ppgw values(\"supportreliable100\",\"checkbox\");");
+        stat.executeUpdate("insert into ppgw values(\"unsolicitednotifymethod\",\"text\");");
+        
+     // Sample data
+        
+        stat.executeUpdate("insert into clusters (type,ptop,pleft,cpid,customer,nodes,name1,ip1,name2,ip2,name3,ip3,name4,ip4) values(\"cluster\",10,100,\"0001\",\"Ent1\",4,\"en1c1p\",\"10.1.1.1\",\"e1c1s1\",\"10.1.1.2\",\"e1c1s2\",\"10.1.1.3\",\"e1c1s3\",\"10.1.1.4\");");
+        stat.executeUpdate("insert into clusters (type,ptop,pleft,cpid,customer,nodes,name1,ip1) values(\"cluster\",20,100,\"0002\",\"Ent1\",1,\"en1c2p\",\"10.1.2.1\");");
+        stat.executeUpdate("insert into clusters (type,ptop,pleft,cpid,customer,nodes,name1,ip1,name2,ip2,name3,ip3) values(\"cluster\",30,100,\"0003\",\"Ent2\",3,\"en2c1p\",\"10.2.1.1\",\"e2c1s1\",\"10.2.1.2\",\"e2c1s2\",\"10.2.1.3\");");
+        stat.executeUpdate("insert into clusters (type,ptop,pleft,cpid,customer,nodes,name1,ip1) values(\"cluster\",40,100,\"0004\",\"Ent3\",1,\"en3c1p\",\"10.3.1.1\");");
+        stat.executeUpdate("insert into clusters (type,ptop,pleft,cpid,customer,nodes,name1,ip1,name2,ip2) values(\"cluster\",50,100,\"0005\",\"Ent4\",2,\"en4c1p\",\"10.4.1.1\",\"en4c1s1\",\"10.4.1.2\");");
+        
+        /*stat.executeUpdate("insert into pprofiles values(\"profile1\",1,0,3,1,1);");
+        stat.executeUpdate("insert into pprofiles values(\"profile2\",0,0,2,0,1);");
+        stat.executeUpdate("insert into pprofiles values(\"profile3\",1,1,3,1,1);");*/ 
+        
+// PGW Template (Source) --------------------------------------
+        String[][] PC = {{"addtrnkgrpin","prov-add:trnkgrp:name=\"\"#trnkgrpin#\"\",type=\"\"IP_SIP\"\",svc=\"\"#svc#\"\""},
+        		{"addtrnkgrpout","prov-add:trnkgrp:name=\"\"#trnkgrpout#\"\",type=\"\"IP_SIP\"\",svc=\"\"#svc#\"\""},
+        		{"addtrnkgrpprofin","prov-add:TRNKGRPPROF:name=\"\"#trnkgrpin#\"\",profile=\"\"#sipprofile#\"\""},
+        		{"addtrnkgrpprofout","prov-add:TRNKGRPPROF:name=\"\"#trnkgrpout#\"\",profile=\"\"#sipprofile#\"\""},
+        		{"addsiprttrnkgrp","prov-add:siprttrnkgrp: name=\"\"#trnkgrpout#\"\", url=\"\"#destination#\"\", srvrr=0,sipproxyport=#portout#, version=\"\"2.0\"\",cutthrough=2, extsupport=1, domainbasedrtgsupport=0"},
+        		{"addrttrnk","prov-add:rttrnk:weightedTG=\"\"OFF\"\",name=\"\"#rttrnkname#\"\",trnkgrpnum=#trnkgrpout#"},
+        		{"addrtlist","prov-add:rtlist:name=\"\"#rtlistname#\"\",rtname=\"\"#rttrnkname#\"\",distrib=\"\"#distrib#\"\""},
+        		{"addoutprofile","prov-add:PROFILE:NAME=\"\"#sipprofile#\"\", TYPE=\"\"sipprofile\"\", mgcdomain=\"\"#mgcdomain#\"\", mgcsipversion=\"\"SIP/2.0\"\", sipdtmfcontenttype=\"\"1\"\", subscribenotifysupport=\"\"0\"\", support183=\"\"3\"\", supportreliable100=\"\"SUPPORTED\"\", unsolicitednotifymethod=\"\"1\"\""},
+        		{"addinprofile","prov-add:PROFILE:NAME=\"\"#sipprofile#\"\", TYPE=\"\"sipprofile\"\",custgrpid=\"\"#cpid#\"\", localport=\"\"#portin#\"\",mgcdomain=\"\"#mgcdomain#\"\", mgcsipversion=\"\"SIP/2.0\"\", sipdtmfcontenttype=\"\"1\"\", subscribenotifysupport=\"\"0\"\", support183=\"\"3\"\", supportreliable100=\"\"SUPPORTED\"\", unsolicitednotifymethod=\"\"1\"\""},
+        		{"dlttrnkgrpin","prov-dlt:trnkgrp:name=\"\"#trnkgrpin#\"\""},
+        		{"dlttrnkgrpout","prov-dlt:trnkgrp:name=\"\"#trnkgrpout#\"\""},
+        		{"dlttrnkgrpprofin","prov-dlt:TRNKGRPPROF:name=\"\"#trnkgrpin#\"\",profile=\"\"#sipprofile#\"\""},
+        		{"dlttrnkgrpprofout","prov-dlt:TRNKGRPPROF:name=\"\"#trnkgrpout#\"\",profile=\"\"#sipprofile#\"\""},
+        		{"dltsiprttrnkgrp","prov-dlt:siprttrnkgrp: name=\"\"#trnkgrpout#\"\""},
+        		{"dltrttrnk","prov-dlt:rttrnk:weightedTG=\"\"OFF\"\",name=\"\"#rttrnkname#\"\""},
+        		{"dltrtlist","prov-dlt:rtlist:name=\"\"#rtlistname#\"\",rtname=\"\"#rttrnkname#\"\""},
+        		{"dltoutprofile","prov-dlt:PROFILE:NAME=\"\"#sipprofile#\"\""},
+        		{"dltinprofile","prov-dlt:PROFILE:NAME=\"\"#sipprofile#\"\""},
+        };
+        for(int i=0; i<PC.length; i++){
+        	stat.executeUpdate("insert into tpgw values(\""+PC[i][0]+"\", "+"\""+PC[i][1]+"\");"); 
+        }
+// SBC Template (Source)
+        String[][] SC1 = {{"start","adjacency sip #adjname#"},
+        		{"describe","description #description#"},
+        		{"forcepeer","force-signaling-peer"},
+        		{"setvrf","vrf #vrf#"},
+        		{"setnat","nat force-off"},
+        		{"settransport","preferred-transport tcp"},
+        		{"setmyaddress","signaling-address ipv4 #sigip#"},
+        		{"setmyport","signaling-port #portin#"},
+        		{"setpeeraddress","remote-address ipv4 #peerip# 255.255.255.255"},
+        		{"setpeerip","signaling-peer #peerip#"},
+        		{"setpeerport","signaling-peer-port #peerport#"},
+        		{"setaccount","account #vrf#"},
+        		{"setpassthrough","sipi passthrough"},
+        		{"l2ein","media-late-to-early-iw incoming"},
+        		{"l2eout","media-late-to-early-iw outgoing"},
+        		{"end","attach"}
+        };
+        for(int j=0; j<SC1.length; j++){
+        	stat.executeUpdate("insert into tsbc values(\""+SC1[j][0]+"\", "+"\""+SC1[j][1]+"\");"); 
+        }
+        conn.close();
+    }
+  public static void initdb() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+	  Class.forName("com.mysql.jdbc.Driver").newInstance();
+      Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/?" +
+      		"user=root");
+      Statement stat = conn.createStatement();
+      stat.executeUpdate("drop schema if exists hcs;");
+      stat.executeUpdate("create schema hcs;");
+  }
+  }

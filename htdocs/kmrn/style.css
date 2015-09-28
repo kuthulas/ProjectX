@@ -1,0 +1,134 @@
+.Provider,.Reseller,.Customer,.Division,.Location,.Phone { 
+    border:0.2em solid black;  
+    width:100px;
+    height:50px;
+    position:absolute;
+    text-align:center;
+    line-height:100px;
+	cursor:move;
+	background-color:#F2C24A;
+	filter:alpha(opacity=80);
+		box-shadow: 2px 2px 19px #aaa;
+   -o-box-shadow: 2px 2px 19px #aaa;
+   -webkit-box-shadow: 2px 2px 19px #aaa;
+   -moz-box-shadow: 2px 2px 19px #aaa;
+   border-radius:0.2em;
+}
+
+body{
+background:url('bgd.png') repeat scroll;
+min-height:auto;
+}
+
+.ep{
+position:absolute;
+background-color:black;
+border-radius:0.1em;
+top:12.5px;
+left:12.5px;
+width:25px;
+height:25px;
+}
+
+.menu,.menudiv,#stream1,#clear { 
+
+	position:fixed; 
+	right:1em; top:1em; 
+	background-color:black;
+	padding:0.3em;
+	text-align:center;
+	opacity:0.8;
+	z-index:5000;
+	filter:alpha(opacity=80);
+		box-shadow: 2px 2px 19px #aaa;
+   -o-box-shadow: 2px 2px 19px #aaa;
+   -webkit-box-shadow: 2px 2px 19px #aaa;
+   -moz-box-shadow: 2px 2px 19px #aaa;
+
+}
+
+#stream2 {
+	position:fixed; 
+	right:1em; top:50%;
+	background-color:black;
+	padding:0.3em;
+	text-align:center;
+	opacity:0.8;
+	z-index:5000;
+	filter:alpha(opacity=80);
+		box-shadow: 2px 2px 19px #aaa;
+   -o-box-shadow: 2px 2px 19px #aaa;
+   -webkit-box-shadow: 2px 2px 19px #aaa;
+   -moz-box-shadow: 2px 2px 19px #aaa;
+
+}
+#sidebar { position: fixed; left: 0; top: 0; bottom: 0; overflow: auto; width: 60px; background: black; border-right:0.3em solid #F2C24A;}
+
+.menudiv {
+left:1em;
+top:1em;
+width:10em;
+padding-top:0.1em;
+padding-bottom:0.5em;
+}
+
+#stream1,#stream2 {
+right:1em;
+width:50em;
+padding-top:0.1em;
+padding-bottom:0.5em;
+}
+
+.menudiv h5 {
+margin-top:0.25em;
+margin-bottom:0.25em;
+font-size:1em;
+color:white;
+}
+
+a {text-decoration:none;
+font-size:0.8em;
+font-weight:bold;
+color:white;
+font-family:helvetica;
+
+}
+
+.focusField{
+    	border:solid 2px #73A6FF;
+    	background:#EFF5FF;
+    	color:#000;
+    	width:100%;
+    	text-align:center;
+    }
+.addnode:hover{
+		cursor:pointer;
+    }	
+.propmenu{ 
+	border-radius:0.2em;
+	background-color:white;
+	opacity:0.8;
+	border:solid 1px black;
+	padding:0.2em;
+	position:absolute;
+	left:100px;
+	z-index:5000;
+	filter:alpha(opacity=80);
+    box-shadow: 2px 2px 19px #aaa;
+   -o-box-shadow: 2px 2px 19px #aaa;
+   -webkit-box-shadow: 2px 2px 19px #aaa;
+   -moz-box-shadow: 2px 2px 19px #aaa;
+	line-height:0.1em;
+	width:100px;
+	height:auto;
+}	
+
+.propbox { 
+	border-radius:0.2em;
+	padding:0em;
+	text-align:center;
+	background-color:white;
+	border:solid 1px black;
+	width:90%;
+	height:auto;
+}	

@@ -1,0 +1,44 @@
+<!doctype html>  
+<html lang="en">
+	<head>
+		<title>Transformer</title>
+		<meta name="viewport" content="width=800, user-scalable=no">
+		<link href='google.css' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="demo.css">
+	</head>
+	<body oncontextmenu="return false;">
+		<div class="meny">
+			<h2>Menu</h2>
+			<ul>
+				<li><a class="tag" onclick="document.getElementById('area').setAttribute('src', '/route'); document.getElementById('sheader').innerHTML='Create Route Plan'">Create Route Plan</a></li>
+				<li><a class="tag" id="kmrn" onclick="document.getElementById('area').setAttribute('src', 'http://72.163.172.25/kmrn'); document.getElementById('sheader').innerHTML='Manage Deployment'">Manage Deployment</a></li>
+				<li><a class="tag" >Manage Inventory</a></li>
+				<li><a class="tag" onclick="document.getElementById('area').setAttribute('src', '/'); document.getElementById('sheader').innerHTML='Manage Aggregation'">Manage Aggregation</a></li>
+				<li><a class="tag" >Reports</a></li>
+				<li><a class="tag" >Log Out</a></li>
+			</ul>
+		</div>
+		<div class="meny-arrow"></div>
+		<div class="contents">
+		<div id="sheader"></div>
+			<article>
+				<h1>HCS Transformer</h1>
+				<p>A GB HCS initiative to demonstrate user experience and flow abstraction with Javascript.</p>
+				<small>Created by <a target="_blank" href='http://wwwin-tools.cisco.com/dir/details/kuthulas'>Kumaran Thulasiraman</a> and <a target="_blank" href='http://wwwin-tools.cisco.com/dir/details/prag'>Praveen Garlapati</a></small>
+			</article><br/>
+		<iframe id="area" width=100% height=85%></iframe>
+		</div>
+		<script src="lib/meny.min.js"></script>
+		<script>
+			var meny = Meny.create({
+				menuElement: document.querySelector( '.meny' ),
+				contentsElement: document.querySelector( '.contents' ),
+				position: Meny.getQuery().p || 'left',
+				height: 200,
+				width: 260,
+				threshold: 40
+			});
+			document.getElementById('area').setAttribute('src', '');
+		</script>
+	</body>
+</html>

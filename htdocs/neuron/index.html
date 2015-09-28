@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Cisco Rhythme</title>
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body oncontextmenu="return false;">
+<div id="demo">
+<img class="logo1" style="color:white;top:5%;left:38%;" src="lib/logo.png">
+<a class="title">Rhythme</a>
+<input class='login' style="position:fixed;top:50%;left:40%;font-size:1em;" type="text" value="Username" id="username" onfocus="this.value = '';this.style.color='black'" onblur="if(this.value == ''){this.value='Username'};this.style.color='gray';"></input>
+<input class="login" style="top:55%;left:40%;font-size:1em;" type="text" value="Password" id="password" onfocus="this.type='password';this.value = '';this.style.color='black'" onblur="if(this.value == ''){this.type='text';this.value='Password'};this.style.color='gray';"></input>
+<a id='lstat' style="color:red;position:fixed;top:60%;left:40.5%;"></a>
+<a class="login" style="color:gray;height:auto;padding-top:0.3em;padding-bottom:0.3em;top:65%;left:40%;cursor:pointer;" id="logmein" onclick="auth();">Log In</a>
+<img class="logo" style="color:white;top:85%;left:46%;" width=100 src="lib/cisco.png">
+</div>
+<script type="text/javascript" src="lib/jquery.min.js"></script>
+<script type="text/javascript" src="lib/auth.js"></script>
+</body>
+</html>

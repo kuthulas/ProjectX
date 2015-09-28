@@ -1,0 +1,15 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ucf="http://webservice.api.visionoss.com/v8_0/ucFulfillment/">
+<soapenv:Header xmlns:wsa="http://www.w3.org/2005/08/addressing"><wsse:Security soapenv:mustUnderstand="1" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"><wsse:UsernameToken wsu:Id="UsernameToken-74"><wsse:Username>webservice</wsse:Username><wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Cisco123</wsse:Password><wsu:Created>kuthulas</wsu:Created></wsse:UsernameToken></wsse:Security><wsa:Action>http://webservice.api.visionoss.com/v8_0/ucFulfillment/ucFulfillment/listIppbxClusterDetailsRequest</wsa:Action><wsa:MessageID>uuid:db69c4d4-2b7d-4392-bf2c-7bc930959fee</wsa:MessageID></soapenv:Header>
+<soapenv:Body>
+      <ucf:listIppbxClusterDetailsRequest>
+         <requestData>
+            <requestUser>webservice</requestUser>
+         </requestData>
+         <ippbxClusterFullListQueryParameters>
+            <providerHierarchy>
+               <providerName>HCS_Provider</providerName>
+            </providerHierarchy> 		
+         </ippbxClusterFullListQueryParameters>
+      </ucf:listIppbxClusterDetailsRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
